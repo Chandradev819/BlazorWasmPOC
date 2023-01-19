@@ -1,0 +1,35 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+<Blazorise.Button Color="Color.Primary" Clicked="@ShowInfoMessage">Say hi!</Blazorise.Button> <br />
+
+<Blazorise.Button Color="Color.Danger" Clicked="@ShowConfirmMessage">Confirm</Blazorise.Button>
+<br />
+<Blazorise.Button Color="Color.Warning" Clicked="@ShowWarningNotification">Show alert!</Blazorise.Button>
+
+
+@code {
+    [Inject] IMessageService MessageService { get; set; }
+    [Inject] INotificationService NotificationService { get; set; }
+
+    Task ShowInfoMessage()
+    {
+        return MessageService.Info("This is a simple info message!", "Hello");
+    }
+
+    async Task ShowConfirmMessage()
+    {
+        if (await MessageService.Confirm("Are you sure do you want to delete ?", "Confirmation"))
+        {
+            Console.WriteLine("OK Clicked");
+        }
+        else
+        {
+            Console.WriteLine("Cancel Clicked");
+        }
+    }
+    Task ShowWarningNotification()
+    {
+        return NotificationService.Success("Record has been deleted sucessfully", "Alert");
+    }
+}
